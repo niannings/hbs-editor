@@ -14,7 +14,7 @@
         </main>
         <footer>
           <slot name="footer"></slot>
-          <button @click="close">Close</button>
+          <button @click="close">关闭</button>
         </footer>
       </div>
     </transition>

@@ -1,19 +1,15 @@
 <template>
   <div class="workspace">
-    <ExportYamlModal :yaml="exportedYaml" @close="deleteExportedYaml"></ExportYamlModal>
     <ShareUrlModal :url-for-sharing="urlForSharing" @close="deleteUrlForSharing"></ShareUrlModal>
     <div v-if="interactive" class="workspace-header">
       <div class="version-chooser">
         Handlebars:
         <handlebars-version-chooser v-model="currentExample.handlebarsVersion" @input="executeExample" />
         <button @click="addPartial">
-          Add partial
-        </button>
-        <button @click="copyAsYaml">
-          Copy as YAML
+          添加片段
         </button>
         <button @click="share">
-          Share (Experimental)
+          分享（受url长度限制，内容太多可能会有异常）
         </button>
       </div>
     </div>
@@ -70,6 +66,11 @@
         :interactive="interactive"
       />
     </div>
+    <div>
+      <button @click="share">
+        提交
+      </button>
+    </div>
   </div>
 </template>
 <script>
@@ -77,13 +78,11 @@ import Vue from "vue";
 import WorkspaceElement from "./WorkspaceElement.vue";
 import WorkspaceError from "./WorkspaceError.vue";
 import HandlebarsVersionChooser from "./HandlebarsVersionChooser.vue";
-import { serializeToYaml } from "../lib/example-serializer";
-import ExportYamlModal from "./ExportYamlModal";
 import { createSharedUrl, loadFromSharedUrl } from "./share-utils";
 import ShareUrlModal from "./ShareUrlModal";
 
 export default {
-  components: { ShareUrlModal, WorkspaceElement, WorkspaceError, HandlebarsVersionChooser, ExportYamlModal },
+  components: { ShareUrlModal, WorkspaceElement, WorkspaceError, HandlebarsVersionChooser },
   props: {
     parsedExample: { type: Object, required: true },
     interactive: { type: Boolean, default: false },
@@ -127,9 +126,6 @@ export default {
     },
     exampleContentChanged() {
       this.executeExample();
-    },
-    copyAsYaml() {
-      this.$data.exportedYaml = serializeToYaml(this.currentExample);
     },
     deleteExportedYaml() {
       this.$data.exportedYaml = null;

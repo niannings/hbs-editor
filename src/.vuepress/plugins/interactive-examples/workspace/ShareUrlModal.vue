@@ -1,17 +1,8 @@
 <template>
   <Modal :show="show" @close="$emit('close')">
-    <template v-slot:header>Share this example </template>
-    <p>
-      You can paste this URL into github issues to order to share your setup when filing bugs or questions
-    </p>
-    <hr />
+    <template v-slot:header>分享链接</template>
     <input ref="urlInput" type="text" :value="urlForSharing" class="url-for-sharing" onfocus="this.select()" />
-    <button @click="copyToClipboard">Copy to clipboard</button>
-    <div class="share">
-      <button @click="reportSecurityIssue">Report a security issue</button>
-      <button @click="askQuestion">Ask question at github</button>
-      <button @click="fileBug">File bug at github</button>
-    </div>
+    <button @click="copyToClipboard">复制</button>
     <div v-show="successNotification" class="success-notification">{{ successNotification }}</div>
   </Modal>
 </template>
@@ -104,12 +95,5 @@ ${this.$props.urlForSharing}
     margin-top: 1rem;
     padding: 0.5rem;
     border-radius: 0.5rem;
-}
-
-.share {
-    border: 1px dashed $baseColor;
-    border-radius: 0.5rem;
-    padding: 0.5rem;
-    margin-top: 0.5rem;
 }
 </style>
