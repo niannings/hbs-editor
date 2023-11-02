@@ -1,0 +1,43 @@
+<template v-slot:page-top>
+  <div class="try-handlebars">
+    <workspace
+      :parsed-example="parsedExampleWithEnsuredPreparationScript"
+      :interactive="true"
+      :show-input-output="true"
+    />
+  </div>
+</template>
+<script>
+import Workspace from "../workspace/Workspace.vue";
+import { deindent } from "../../../private-components/utils";
+
+export default {
+  components: { Workspace },
+  data() {
+    return {
+      nonInteractiveForPrerendering: true,
+    };
+  },
+  computed: {
+    parsedExampleWithEnsuredPreparationScript() {
+      return {
+        ...this.$frontmatter.parsedExample,
+        preparationScript: this.$frontmatter.parsedExample.preparationScript || this.emptyPreparationScript(),
+      };
+    },
+  },
+  mounted() {
+    this.nonInteractiveForPrerendering = false;
+  },
+  methods: {
+    emptyPreparationScript() {
+      return deindent`
+      // Handlebars.registerHelper('loud', function(string) {
+      //    return string.toUpperCase()
+      // });
+      `;
+    },
+  },
+};
+</script>
+
